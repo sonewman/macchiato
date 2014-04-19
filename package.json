@@ -1,0 +1,25 @@
+{
+  "name": "macchiato",
+  "version": "0.0.0",
+  "description": "Mocha styled tape with sinon",
+  "main": "macchiato.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sonewman/macchiato.git"
+  },
+  "keywords": [
+    "mocha",
+    "tape",
+    "sinon",
+    "testing"
+  ],
+  "author": "Sam Newman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sonewman/macchiato/issues"
+  },
+  "homepage": "https://github.com/sonewman/macchiato"
+}
