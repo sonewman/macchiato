@@ -1,0 +1,16 @@
+{
+  "asi": true
+  , "laxbreak": true
+  , "laxcomma": true
+  , "expr": true
+  , "globals": {
+    "describe": true
+    , "xdescribe": true
+    , "it": true
+    , "xit": true
+    , "before": true
+    , "after": true
+    , "beforeEach": true
+    , "afterEach": true
+  }
+}

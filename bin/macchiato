@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+var path = require('path')
+var fs = require('fs')
+var macchiato = require('macchiato')
+var args = process.argv.slice(2)
+var l = args.length
+if (!l) return
+var files = []
+
+args.forEach(getFiles)
+
+function getFiles(p) {
+  p = path.resolve(p)
+  var stats = fs.statSync(p)
+  if (stats.isFile()) {
+    files.push(p)
+  } else if (stats.isDirectory()) {
+    fs.readdirSync(p).forEach(function (f) {
+      getFiles(path.join(p, f))
+    })
+  }
+}
+
+console.log(files)
+
+macchiato.run(files)
+
+// vim: set ft=javascript
+
