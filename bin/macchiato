@@ -22,8 +22,6 @@ function getFiles(p) {
   }
 }
 
-console.log(files)
-
 macchiato.run(files)
 
 // vim: set ft=javascript

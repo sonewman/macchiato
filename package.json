@@ -4,7 +4,7 @@
   "description": "Mocha styled tape with sinon",
   "main": "macchiato.js",
   "scripts": {
-    "test": "npm test"
+    "test": "bin/macchiato test/"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,11 @@
   },
   "homepage": "https://github.com/sonewman/macchiato",
   "dependencies": {
+    "foreach-async": "^1.1.0",
     "sinon": "^1.9.1",
     "tape": "^2.12.3"
+  },
+  "devDependencies": {
+    "tap": "^0.4.8"
   }
 }
