@@ -9,12 +9,12 @@ var currentBody = null
 var Harness = require('./lib/results')
 var harness
 var outputStream
-
+var TapOut = require('./lib/tap-output')
 var Suite = require('./lib/suite')
 
 var methodMap = {
   describe: describe
-  , it: It
+  , it: it
   , before: before
   , beforeEach: beforeEach
   , after: after
@@ -32,24 +32,19 @@ function through(transform, flush) {
 
 function handleArgs(args) {
   var options = {}
-  
+
   if (arguments.length) {
     switch (typeof arguments[0]) {
       case 'object':
-        if (arguments[0])
-          options = arguments[0]
+        if (arguments[0]) options = arguments[0]
         break
       case 'string':
-        if (arguments[2])
-          options = arguments[2]
-
+        if (arguments[2]) options = arguments[2]
         options.desc = arguments[0]
         options.body = arguments[1]
         break
       case 'function':
-        if (arguments[1]) {
-          options = arguments[1]
-        }
+        if (arguments[1]) options = arguments[1]
         options.desc = UNDESCRIBED
         options.body = arguments[0]
     }
@@ -63,7 +58,6 @@ function macchiato() {
   var options = handleArgs(arguments)
   var stream
 
-
   options.useGlobals = options.useGlobals === false
     ? false : true
 
@@ -74,35 +68,37 @@ function macchiato() {
     }
   }
 
+//  if (!outputStream) {
+//    outputStream = through(function (data, enc, next) {
+//      //console.log(this.silence)
+////      if (this.silence) {
+////        next()
+////      } else {
+//        next(null, data)
+////      }
+//    })
+//  }
+
+  var harness = getHarness()
+
   if (!outputStream) {
-    outputStream = through(function (data, enc, next) {
-      //console.log(this.silence)
-//      if (this.silence) {
-//        next()
-//      } else {
-        next(null, data)
-//      }
-    })
+    outputStream = new TapOut({ harness: harness })
+    outputStream.pipe(process.stdout)
+    harness.pipe(outputStream)
   }
 
-  createHarness()
   outputStream.silence = options.silent || false
 
-  if (options.desc || options.body) 
+  if (options.desc || options.body)
     describe(options.desc, options.body)
 }
 
 
-function createHarness() {
-
-  if (!harness) {
-    harness = new Harness()
-//    harness = tape.createHarness({ autoclose: false })
-//    harness.createStream()
-//      .pipe(outputStream)
-//      .pipe(process.stdout)
-  }
+function getHarness() {
+  return harness || (harness = new Harness())
 }
+macchiato.globalHarness = getHarness
+
 
 macchiato.run = function run(files) {
   (files || []).forEach(function (file) {
@@ -122,7 +118,7 @@ function isArray(obj) {
 }
 
 macchiato.describe = describe
-macchiato.it = It
+macchiato.it = it
 
 macchiato.before = before
 macchiato.after = after
@@ -140,7 +136,7 @@ function describe(desc, body) {
   var isBase = false
   var be = currentBody ? currentBody.beforeEach : []
   var ae = currentBody ? currentBody.afterEach : []
-  
+
   var suite = new Suite({
     desc: desc
     , before: noop
@@ -159,7 +155,7 @@ function describe(desc, body) {
   }
 
   currentBody = suite
-  
+
   suite.run()
 
   currentBody = suite.parent
@@ -179,7 +175,7 @@ Object.defineProperty(describe.prototype, 'results', {
   }
 })
 
-function It(desc, body) {
+function it(desc, body) {
   currentBody.push(new Suite.Test({
     desc: desc
     , body: body
@@ -188,7 +184,7 @@ function It(desc, body) {
 
 
 // Export stuff...
-describe.prototype.it = It
+describe.prototype.it = it
 
 function before(body) { currentBody._before = body }
 describe.prototype.before = before
@@ -211,4 +207,3 @@ describe.prototype.xdescribe = xdescribe
 
 function xit(desc, body) {}
 describe.prototype.xit = xit
-
