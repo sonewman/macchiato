@@ -12,8 +12,8 @@ test('simple test', function (t) {
     })
     
     it('should do another thing', function (done) {
-      this.assert(this.myTest)
-      t.assert(this.myTest)
+      this.assert(!this.myTest)
+      t.assert(!this.myTest)
       t.end()
       done()
     })

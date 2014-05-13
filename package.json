@@ -25,7 +25,8 @@
   "dependencies": {
     "foreach-async": "^1.1.0",
     "sinon": "^1.9.1",
-    "tape": "^2.12.3"
+    "tape": "^2.12.3",
+    "tapout": "^1.0.0"
   },
   "devDependencies": {
     "tap": "^0.4.8"

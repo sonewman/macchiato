@@ -9,16 +9,11 @@ var currentBody = null
 var Harness = require('./lib/results')
 var harness
 var outputStream
-var TapOut = require('./lib/tap-output')
-var Suite = require('./lib/suite')
+var TapOut = require('tapout')
 
 var methodMap = {
   describe: describe
   , it: it
-  , before: before
-  , beforeEach: beforeEach
-  , after: after
-  , afterEach: afterEach
   , xdescribe: xdescribe
   , xit: xit
 }
@@ -68,16 +63,11 @@ function macchiato() {
     }
   }
 
-//  if (!outputStream) {
-//    outputStream = through(function (data, enc, next) {
-//      //console.log(this.silence)
-////      if (this.silence) {
-////        next()
-////      } else {
-//        next(null, data)
-////      }
-//    })
-//  }
+  if (options.silent) {
+    outputStream = through(function (data, enc, next) {
+        next()
+    })
+  }
 
   var harness = getHarness()
 
@@ -86,8 +76,6 @@ function macchiato() {
     outputStream.pipe(process.stdout)
     harness.pipe(outputStream)
   }
-
-  outputStream.silence = options.silent || false
 
   if (options.desc || options.body)
     describe(options.desc, options.body)
@@ -111,99 +99,49 @@ macchiato.run = function run(files) {
   })
 }
 
-function noop() {}
-function isFunc(obj) { return 'function' === typeof obj }
-function isArray(obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]'
-}
-
 macchiato.describe = describe
 macchiato.it = it
 
-macchiato.before = before
-macchiato.after = after
-
-macchiato.beforeEach = beforeEach
-macchiato.afterEach = afterEach
-
-Object.defineProperty(macchiato, 'results', {
-  get: function () {
-    return harness
-  }
-})
-
-function describe(desc, body) {
-  var isBase = false
-  var be = currentBody ? currentBody.beforeEach : []
-  var ae = currentBody ? currentBody.afterEach : []
-
-  var suite = new Suite({
-    desc: desc
-    , before: noop
-    , after: noop
-    , beforeEach: [].concat(be)
-    , afterEach: [].concat(ae)
-    , body: body
-    , harness: harness
-  })
-
-  if (currentBody) {
-    currentBody.push(suite)
-    suite.parent = currentBody
-  } else {
-    isBase = true
-  }
-
-  currentBody = suite
-
-  suite.run()
-
-  currentBody = suite.parent
-
-  if (isBase) {
-    suite.walk(walkEnd)
-  }
-
-  function walkEnd() {
-    currentBody = null
+function makeAspectCallback(name) {
+  return function (fn) {
+    if (harness) harness.add(name, fn)
   }
 }
 
-Object.defineProperty(describe.prototype, 'results', {
-  get: function () {
-    return harness
-  }
-})
+var aspectMethods = [
+  'before'
+  , 'beforeEach'
+  , 'after'
+  , 'afterEach'
+]
 
-function it(desc, body) {
-  currentBody.push(new Suite.Test({
-    desc: desc
-    , body: body
-  }))
+for (var i = 0; i < aspectMethods.length; i++) {
+  var name = aspectMethods[i]
+  macchiato[name]
+  = describe[name]
+  = methodMap[name]
+  = makeAspectCallback(name)
 }
 
+function checkHarness() {
+  if (harness) return
+  throw new Error('Cannot apply spec as there is no Harness')
+}
 
-// Export stuff...
+function describe(desc, fn) {
+  checkHarness()
+  harness.addSuite(desc, fn)
+}
+
+function it(desc, fn) {
+  checkHarness()
+  harness.addTest(desc, fn)
+}
 describe.prototype.it = it
-
-function before(body) { currentBody._before = body }
-describe.prototype.before = before
-
-function beforeEach(body) {
-  currentBody.add('beforeEach', body)
-}
-describe.prototype.beforeEach = beforeEach
-
-function after(body) { currentBody._after = body }
-describe.prototype.after = after
-
-function afterEach(body) {
-  currentBody.add('afterEach', body)
-}
-describe.prototype.afterEach = afterEach
 
 function xdescribe(name, body) {}
 describe.prototype.xdescribe = xdescribe
 
 function xit(desc, body) {}
 describe.prototype.xit = xit
+
