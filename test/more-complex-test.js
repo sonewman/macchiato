@@ -45,7 +45,7 @@ test('more-complex-test', function (t) {
 
       it('Should run peer sub test spec', function () {
         t.assert(true, 'peer nested test was called')
-        this.assert(false, 'something failed')
+        this.assert(true, 'something failed')
         this.end()
         end()
       })

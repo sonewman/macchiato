@@ -6,7 +6,7 @@ var Transform = require('stream').Transform
 var UNDESCRIBED = '(Undescribed spec)'
 var createdSlientStream = false
 var currentBody = null
-var Harness = require('./lib/results')
+var Harness = require('./lib/runner')
 var harness
 var outputStream
 var TapOut = require('tapout')
@@ -27,21 +27,21 @@ function through(transform, flush) {
 
 function handleArgs(args) {
   var options = {}
-
-  if (arguments.length) {
-    switch (typeof arguments[0]) {
+  
+  if (args.length) {
+    switch (typeof args[0]) {
       case 'object':
-        if (arguments[0]) options = arguments[0]
+        if (args[0]) options = args[0]
         break
       case 'string':
-        if (arguments[2]) options = arguments[2]
-        options.desc = arguments[0]
-        options.body = arguments[1]
+        if (args[2]) options = args[2]
+        options.desc = args[0]
+        options.body = args[1]
         break
       case 'function':
-        if (arguments[1]) options = arguments[1]
+        if (args[1]) options = args[1]
         options.desc = UNDESCRIBED
-        options.body = arguments[0]
+        options.body = args[0]
     }
   }
 
