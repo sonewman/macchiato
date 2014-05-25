@@ -1,31 +1,42 @@
 var sinon = require('sinon')
 var describe = require('../')
+var test = require('tap').test
 
-describe('My Application', function () {
+test('assert test 2', function (t) {
 
-  beforeEach(function () {
-    this.thing = this.stub()
-  })
+  describe('My Application', function () {
 
-  it('Should do some stuff', function (test) {
-    test.thing()
-    test.assert(test.thing.calledOnce)
-    test.assert(this.thing.calledOnce)
-    test()
-  })
-  
-  describe('sub test', function () {
-    
     beforeEach(function () {
-      this.thing = null
+      this.thing = this.stub()
+      this.value =  123
     })
 
-    it('Should run spec once again', function (done) {
-      this.equals(this.thing, null)
-      done()
+    it('Should do some stuff', function (test) {
+      test.thing()
+      test.assert(test.thing.calledOnce)
+      test.assert(this.thing.calledOnce)
+      test()
     })
 
+    describe('sub test', function () {
+      
+      beforeEach(function () {
+        this.thing = null
+      })
+
+      it('Should run spec once again', function (done) {
+        this.equals(this.thing, null)
+        this.equals(this.value, done.value)
+        done.value = 321
+        done()
+      })
+
+      afterEach(function () {
+        t.equals(this.value, 321)
+        t.end()
+      })
+    })
   })
-
 })
+
 
