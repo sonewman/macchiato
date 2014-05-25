@@ -20,7 +20,7 @@ test('more-complex-test', function (t) {
     beforeEach(mockBeforeEach)
 
     it('Should do some stuff', function (done) {
-     t.assert(true, 'base level test was called')
+      t.assert(true, 'base level test was called')
       done()
     })
 

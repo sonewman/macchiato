@@ -52,15 +52,13 @@ function handleArgs(args) {
 function macchiato() {
   var options = handleArgs(arguments)
   var stream
-
-  options.useGlobals = options.useGlobals === false
+  var harness
+  var useGlobals = options.useGlobals === false
     ? false : true
 
-  if (!global.describe && !global.it) {
-    if (options.useGlobals) {
-      var g = 'undefined' !== typeof window ? window : global
-      for (var key in methodMap) g[key] = methodMap[key]
-    }
+  if (!global.describe && !global.it && useGlobals) {
+    var g = 'undefined' !== typeof window ? window : global
+    for (var key in methodMap) g[key] = methodMap[key]
   }
 
   if (options.silent) {
@@ -69,14 +67,13 @@ function macchiato() {
     })
   }
 
-  var harness = getHarness()
-
   if (!outputStream) {
+    harness = getHarness()
     outputStream = new TapOut({ harness: harness })
     outputStream.pipe(process.stdout)
     harness.pipe(outputStream)
   }
-
+  
   if (options.desc || options.body)
     describe(options.desc, options.body)
 }

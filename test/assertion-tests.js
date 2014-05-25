@@ -32,26 +32,22 @@ describe('My Application', function () {
 
   })
 
-//    describe('something else', function () {
-//
-//      it('Should do some more things', function (done) {
-//        t.assert(true, 'even deeper test was called')
-//        this.end()
-//      })
-//    })
-//
-//  })
-//
-//  describe('another branch', function () {
-//
-//    it('Should run peer sub test spec', function () {
-//      t.assert(true, 'peer nested test was called')
-//      this.assert(true, 'something failed')
-//      this.end()
-//      end()
-//    })
-//
-//  })
+  describe('something else', function () {
 
+    it('Should do some more things', function (done) {
+      this.assert(true, 'even deeper test was called')
+      this.end()
+    })
+  })
+
+  describe('another branch', function () {
+
+    it('Should run peer sub test spec', function () {
+      this.assert(true, 'peer nested test was called')
+      this.assert(true, 'something failed')
+      this.end()
+    })
+
+  })
 })
 
