@@ -6,11 +6,11 @@ var macchiato = require('macchiato')
 var args = process.argv.slice(2)
 var l = args.length
 if (!l) return
+
+args = require('minimist')(args)
 var files = []
 
-args.forEach(getFiles)
-
-function getFiles(p) {
+args._.forEach(function getFiles(p) {
   p = path.resolve(p)
   var stats = fs.statSync(p)
   if (stats.isFile()) {
@@ -20,9 +20,8 @@ function getFiles(p) {
       getFiles(path.join(p, f))
     })
   }
-}
+})
 
-macchiato.run(files)
+macchiato.run(files, args)
 
 // vim: set ft=javascript
-

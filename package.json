@@ -6,6 +6,9 @@
   "scripts": {
     "test": "bin/macchiato test/"
   },
+  "bin": {
+    "macchiato": "./bin/macchiato"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:sonewman/macchiato.git"
@@ -24,6 +27,7 @@
   "homepage": "https://github.com/sonewman/macchiato",
   "dependencies": {
     "foreach-async": "^1.1.0",
+    "minimist": "^0.2.0",
     "sinon": "^1.9.1",
     "tape": "^2.12.3",
     "tapout": "^1.2.0"
