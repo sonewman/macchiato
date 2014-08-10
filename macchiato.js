@@ -22,8 +22,11 @@ var outputs = {
   , tap: require('tapout')
 }
 
+// default options
+// TODO write documentation
 var globalOptions = {
   R: 'spec'
+  , bail: false
 }
 
 function through(transform, flush) {
@@ -61,13 +64,13 @@ function macchiato() {
   var options = handleArgs(arguments)
   var stream
   var harness
+  var OutputConstr
   var useGlobals = options.useGlobals === false
     ? false : true
   
   for (var i in globalOptions) {
     if (!(i in options)) options[i] = globalOptions[i]
   }
-  var OutputConstr
 
   if (!global.describe && !global.it && useGlobals) {
     var g = 'undefined' !== typeof window ? window : global
@@ -82,15 +85,16 @@ function macchiato() {
 
   if (!outputStream) {
     harness = getHarness()
-    
     OutputConstr = outputs[options.D] || outputs.spec
-    outputStream = new OutputConstr()
+    outputStream = new OutputConstr(options)
     outputStream.pipe(process.stdout)
     harness.pipe(outputStream)
   }
   
   if (options.desc || options.body)
     describe(options.desc, options.body)
+
+  return describe
 }
 
 
@@ -150,6 +154,7 @@ function describe(desc, fn) {
   checkHarness()
   harness.addSuite(desc, fn)
 }
+describe.describe = describe
 
 function it(desc, fn) {
   checkHarness()
