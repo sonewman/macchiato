@@ -9,13 +9,21 @@ var currentBody = null
 var Harness = require('./lib/runner')
 var harness
 var outputStream
-var TapOut = require('tapout')
 
 var methodMap = {
   describe: describe
   , it: it
   , xdescribe: xdescribe
   , xit: xit
+}
+
+var outputs = {
+  spec: require('./lib/spec-out')
+  , tap: require('tapout')
+}
+
+var globalOptions = {
+  R: 'spec'
 }
 
 function through(transform, flush) {
@@ -55,6 +63,11 @@ function macchiato() {
   var harness
   var useGlobals = options.useGlobals === false
     ? false : true
+  
+  for (var i in globalOptions) {
+    if (!(i in options)) options[i] = globalOptions[i]
+  }
+  var OutputConstr
 
   if (!global.describe && !global.it && useGlobals) {
     var g = 'undefined' !== typeof window ? window : global
@@ -69,7 +82,9 @@ function macchiato() {
 
   if (!outputStream) {
     harness = getHarness()
-    outputStream = new TapOut({ harness: harness })
+    
+    OutputConstr = outputs[options.D] || outputs.spec
+    outputStream = new OutputConstr()
     outputStream.pipe(process.stdout)
     harness.pipe(outputStream)
   }
@@ -84,16 +99,22 @@ function getHarness() {
 }
 macchiato.globalHarness = getHarness
 
+macchiato.run = function run(files, options) {
+  var i, file
 
-macchiato.run = function run(files) {
-  (files || []).forEach(function (file) {
+  files = files || []
+  options = options || {}
+  for (i in options) globalOptions[i] = options[i]
+
+  for (i = 0; i < files.length; i++) {
+    file = files[i]
     try {
       require(file)
     } catch(err) {
       console.error('Error loading file:', file)
       console.error(err)
     }
-  })
+  }
 }
 
 macchiato.describe = describe
