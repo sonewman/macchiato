@@ -1,7 +1,9 @@
 var sinon = require('sinon')
 var describe = require('../')
 
-describe('My Application', function () {
+console.log('Assertion test')
+
+describe('Assertion test', function () {
 
   describe.beforeEach(function () {
     this.thing = this.stub()
@@ -20,7 +22,7 @@ describe('My Application', function () {
   })
 
   describe('sub test', function () {
-    
+
     describe.beforeEach(function () {
       this.thing = null
     })
@@ -50,4 +52,3 @@ describe('My Application', function () {
 
   })
 })
-

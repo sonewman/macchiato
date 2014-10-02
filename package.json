@@ -4,7 +4,7 @@
   "description": "Mocha styled tape with sinon",
   "main": "macchiato.js",
   "scripts": {
-    "test": "tap test/"
+    "test": "bin/macchiato test/"
   },
   "bin": {
     "macchiato": "./bin/macchiato"
@@ -28,7 +28,6 @@
   "dependencies": {
     "certain": "^1.1.0",
     "core-util-is": "^1.0.1",
-    "debug": "^2.0.0",
     "foreach-async": "^1.1.0",
     "inherits": "^2.0.1",
     "minimist": "^0.2.0",
@@ -36,8 +35,5 @@
     "sinon": "^1.9.1",
     "tapout": "^1.2.0",
     "util-extend": "^1.0.1"
-  },
-  "devDependencies": {
-    "tap": "^0.4.8"
   }
 }

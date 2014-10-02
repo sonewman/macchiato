@@ -38,7 +38,7 @@ function through(transform, flush) {
 
 function handleArgs(args) {
   var options = {}
-  
+
   if (args.length) {
     switch (typeof args[0]) {
       case 'object':
@@ -90,7 +90,7 @@ function macchiato() {
     outputStream.pipe(process.stdout)
     getRunner().pipe(outputStream)
   }
-  
+
   if (options.desc || options.body)
     describe(options.desc, options.body)
 
@@ -116,8 +116,13 @@ macchiato.run = function run(files, options) {
   files = files || []
   options = options || {}
 
-  for (var i in options) globalOptions[i] = options[i]
-  for (i = 0; i < files.length; i++) requireFile(files[i])
+  for (var i in options)
+    globalOptions[i] = options[i]
+
+  var runner = getRunner()
+  runner.startDelay = files.length
+  for (i = 0; i < files.length; i++)
+    requireFile(files[i])
 }
 
 macchiato.describe = describe
