@@ -1,10 +1,10 @@
 {
   "name": "macchiato",
-  "version": "1.0.0",
+  "version": "2.0.0-pre",
   "description": "Mocha styled tape with sinon",
   "main": "macchiato.js",
   "scripts": {
-    "test": "bin/macchiato test/"
+    "test": "tap test/"
   },
   "bin": {
     "macchiato": "./bin/macchiato"
@@ -26,11 +26,16 @@
   },
   "homepage": "https://github.com/sonewman/macchiato",
   "dependencies": {
+    "certain": "^1.1.0",
+    "core-util-is": "^1.0.1",
+    "debug": "^2.0.0",
     "foreach-async": "^1.1.0",
+    "inherits": "^2.0.1",
     "minimist": "^0.2.0",
+    "readable-stream": "^1.1.13",
     "sinon": "^1.9.1",
-    "tape": "^2.12.3",
-    "tapout": "^1.2.0"
+    "tapout": "^1.2.0",
+    "util-extend": "^1.0.1"
   },
   "devDependencies": {
     "tap": "^0.4.8"

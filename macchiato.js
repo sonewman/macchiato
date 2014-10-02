@@ -1,14 +1,14 @@
 module.exports = macchiato
 
-var tape = require('tape')
 var Transform = require('stream').Transform
 
 var UNDESCRIBED = '(Undescribed spec)'
 var createdSlientStream = false
 var currentBody = null
-var Harness = require('./lib/runner')
-var harness
+var Runner = require('./lib/runner')
+var runner
 var outputStream
+var noRunnerError = 'Cannot apply spec as there is no test runner'
 
 var methodMap = {
   describe: describe
@@ -59,18 +59,19 @@ function handleArgs(args) {
   return options
 }
 
-
-function macchiato() {
-  var options = handleArgs(arguments)
-  var stream
-  var harness
-  var OutputConstr
-  var useGlobals = options.useGlobals === false
-    ? false : true
-  
+function mergeOptions(options, globalOptions) {
   for (var i in globalOptions) {
     if (!(i in options)) options[i] = globalOptions[i]
   }
+}
+
+function macchiato() {
+  var stream
+  var OutputConstr
+  var options = handleArgs(arguments)
+  mergeOptions(options, globalOptions)
+
+  var useGlobals = options.useGlobals === true
 
   if (!global.describe && !global.it && useGlobals) {
     var g = 'undefined' !== typeof window ? window : global
@@ -79,16 +80,15 @@ function macchiato() {
 
   if (options.silent) {
     outputStream = through(function (data, enc, next) {
-        next()
+      next()
     })
   }
 
   if (!outputStream) {
-    harness = getHarness()
     OutputConstr = outputs[options.D] || outputs.spec
     outputStream = new OutputConstr(options)
     outputStream.pipe(process.stdout)
-    harness.pipe(outputStream)
+    getRunner().pipe(outputStream)
   }
   
   if (options.desc || options.body)
@@ -98,27 +98,26 @@ function macchiato() {
 }
 
 
-function getHarness() {
-  return harness || (harness = new Harness())
+function getRunner() {
+  return runner || (runner = new Runner())
 }
-macchiato.globalHarness = getHarness
+macchiato.globalRunner = getRunner
+
+function requireFile(filename) {
+  try {
+    require(filename)
+  } catch(err) {
+    console.error('Error loading file: %s', filename)
+    console.error(err.stack)
+  }
+}
 
 macchiato.run = function run(files, options) {
-  var i, file
-
   files = files || []
   options = options || {}
-  for (i in options) globalOptions[i] = options[i]
 
-  for (i = 0; i < files.length; i++) {
-    file = files[i]
-    try {
-      require(file)
-    } catch(err) {
-      console.error('Error loading file:', file)
-      console.error(err)
-    }
-  }
+  for (var i in options) globalOptions[i] = options[i]
+  for (i = 0; i < files.length; i++) requireFile(files[i])
 }
 
 macchiato.describe = describe
@@ -126,7 +125,7 @@ macchiato.it = it
 
 function makeAspectCallback(name) {
   return function (fn) {
-    if (harness) harness.add(name, fn)
+    if (runner) runner.add(name, fn)
   }
 }
 
@@ -145,20 +144,19 @@ for (var i = 0; i < aspectMethods.length; i++) {
   = makeAspectCallback(name)
 }
 
-function checkHarness() {
-  if (harness) return
-  throw new Error('Cannot apply spec as there is no Harness')
+function checkRunner() {
+  if (!runner) throw new Error(noRunnerError)
 }
 
 function describe(desc, fn) {
-  checkHarness()
-  harness.addSuite(desc, fn)
+  checkRunner()
+  runner.addBlock(desc, fn)
 }
 describe.describe = describe
 
 function it(desc, fn) {
-  checkHarness()
-  harness.addTest(desc, fn)
+  checkRunner()
+  runner.addTest(desc, fn)
 }
 describe.prototype.it = it
 
