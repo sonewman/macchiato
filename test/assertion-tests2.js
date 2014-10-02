@@ -1,42 +1,38 @@
 var sinon = require('sinon')
 var describe = require('../')
-var test = require('tap').test
+var assert = require('assert')
 
-test('assert test 2', function (t) {
+console.log('assert test 2')
 
-  describe('My Application', function () {
+describe('My Application', function () {
 
-    beforeEach(function () {
-      this.thing = this.stub()
-      this.value =  123
+  describe.beforeEach(function () {
+    this.thing = this.stub()
+    this.value =  123
+  })
+
+  describe.it('Should do something', function (test) {
+    test.thing()
+    test.expect(test.thing.calledOnce).to.equal(true)
+    test.expect(this.thing.calledOnce).to.equal(true)
+    test.done()
+  })
+
+  describe('sub test', function () {
+
+    describe.beforeEach(function () {
+      this.thing = null
     })
 
-    it('Should do some stuff', function (test) {
-      test.thing()
-      test.assert(test.thing.calledOnce)
-      test.assert(this.thing.calledOnce)
-      test()
+    describe.it('Should run another test', function (test) {
+      this.expect(this.thing).to.equal(null)
+      this.expect(this.value).to.equal(test.value)
+      test.value = 321
+      test.done()
     })
 
-    describe('sub test', function () {
-      
-      beforeEach(function () {
-        this.thing = null
-      })
-
-      it('Should run spec once again', function (done) {
-        this.equals(this.thing, null)
-        this.equals(this.value, done.value)
-        done.value = 321
-        done()
-      })
-
-      afterEach(function () {
-        t.equals(this.value, 321)
-        t.end()
-      })
+    describe.afterEach(function () {
+      assert.equal(this.value, 321)
     })
   })
 })
-
-

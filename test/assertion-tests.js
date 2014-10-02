@@ -1,53 +1,54 @@
 var sinon = require('sinon')
 var describe = require('../')
 
-describe('My Application', function () {
+console.log('Assertion test')
 
-  beforeEach(function () {
+describe('Assertion test', function () {
+
+  describe.beforeEach(function () {
     this.thing = this.stub()
   })
 
-  it('Should do some stuff', function (done) {
+  describe.it('Should do some stuff', function (test) {
     this.thing()
-    this.assert(this.thing.calledOnce)
-    done()
+    this.expect(this.thing.calledOnce).to.be.true()
+    test.end()
   })
 
-  it('Should do some stuff again', function (done) {
+  describe.it('Should do some stuff again', function (test) {
     this.thing()
-    this.assert(this.thing.calledOnce)
-    done()
+    this.expect(this.thing.calledOnce).to.be.true()
+    test.end()
   })
 
   describe('sub test', function () {
-    
-    beforeEach(function () {
+
+    describe.beforeEach(function () {
       this.thing = null
     })
 
-    it('Should run spec once again', function (done) {
-      this.equals(this.thing, null)
-      done()
+    describe.it('Should run spec once again', function (test) {
+      this.expect(this.thing).to.equal(null)
+      test.end()
     })
 
   })
 
   describe('something else', function () {
 
-    it('Should do some more things', function (done) {
-      this.assert(true, 'even deeper test was called')
+    describe.it('Should do some more things', function (test) {
+      this.expect(true).to.be.true('even deeper test was called')
       this.end()
     })
   })
 
   describe('another branch', function () {
 
-    it('Should run peer sub test spec', function () {
-      this.assert(true, 'peer nested test was called')
-      this.assert(true, 'something failed')
+    describe.it('Should run peer sub test spec', function () {
+      this.expect(true).to.be.true('peer nested test was called')
+      this.expect(true).to.be.true('something else passed')
       this.end()
     })
 
   })
 })
-
