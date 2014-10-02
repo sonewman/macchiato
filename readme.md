@@ -31,7 +31,7 @@ describe('my test', function () {
 
   describe('my subtest', function () {
     
-    it('should do some stuff', function (done) {
+    it('should do something interesting', function (done) {
       this.assert(true, 'this test is asserting something')
       done()
     })
