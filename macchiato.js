@@ -1,12 +1,13 @@
 module.exports = macchiato
 
+var Runner = require('./lib/runner')
+var Walker = require('./lib/walker')
+var schedule = require('./lib/schedule')
+var block = require('./lib/block')
 var Transform = require('stream').Transform
 
-var UNDESCRIBED = '(Undescribed spec)'
-var createdSlientStream = false
-var currentBody = null
-var Runner = require('./lib/runner')
 var runner
+var UNDESCRIBED = '(Undescribed spec)'
 var outputStream
 var noRunnerError = 'Cannot apply spec as there is no test runner'
 
@@ -78,6 +79,9 @@ function macchiato() {
     for (var key in methodMap) g[key] = methodMap[key]
   }
 
+  // create our global runner
+  getRunner()
+
   if (options.silent) {
     outputStream = through(function (data, enc, next) {
       next()
@@ -88,7 +92,7 @@ function macchiato() {
     OutputConstr = outputs[options.D] || outputs.spec
     outputStream = new OutputConstr(options)
     outputStream.pipe(process.stdout)
-    getRunner().pipe(outputStream)
+    runner.pipe(outputStream)
   }
 
   if (options.desc || options.body)
@@ -120,7 +124,6 @@ macchiato.run = function run(files, options) {
     globalOptions[i] = options[i]
 
   var runner = getRunner()
-  runner.startDelay = files.length
   for (i = 0; i < files.length; i++)
     requireFile(files[i])
 }
@@ -130,7 +133,7 @@ macchiato.it = it
 
 function makeAspectCallback(name) {
   return function (fn) {
-    if (runner) runner.add(name, fn)
+    walker && walker.addAspect(name, fn)
   }
 }
 
@@ -153,21 +156,33 @@ function checkRunner() {
   if (!runner) throw new Error(noRunnerError)
 }
 
-function describe(desc, fn) {
+var started = false
+function canStart() {
+  if (!started) {
+    started = true
+    return true
+  }
+  return false
+}
+
+var walker = new Walker()
+function startWalk() {
+  walker.walk(runner.start.bind(runner, walker.base))
+}
+
+function describe(desc, body) {
   checkRunner()
-  runner.addBlock(desc, fn)
+  walker.add(new block.Child(desc, body))
+
+  if (canStart()) schedule(startWalk)
 }
 describe.describe = describe
 
-function it(desc, fn) {
+function it(desc, body) {
   checkRunner()
-  runner.addTest(desc, fn)
+  walker.add(new block.Test(desc, body))
 }
-describe.prototype.it = it
 
 function xdescribe(name, body) {}
-describe.prototype.xdescribe = xdescribe
 
 function xit(desc, body) {}
-describe.prototype.xit = xit
-
