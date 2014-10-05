@@ -46,12 +46,10 @@ function handleArgs(args) {
         if (args[0]) options = args[0]
         break
       case 'string':
-        if (args[2]) options = args[2]
         options.desc = args[0]
         options.body = args[1]
         break
       case 'function':
-        if (args[1]) options = args[1]
         options.desc = UNDESCRIBED
         options.body = args[0]
     }
