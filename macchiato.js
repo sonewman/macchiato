@@ -183,6 +183,8 @@ function it(desc, body) {
   walker.add(new block.Test(desc, body))
 }
 
+describe.it = it
+
 function xdescribe(name, body) {}
 
 function xit(desc, body) {}

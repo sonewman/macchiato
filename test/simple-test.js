@@ -1,8 +1,9 @@
-var assert = require('assert')
-var describe = require('../')
-var count = 0
-
 console.log('runner test')
+
+var assert = require('assert')
+console.log('-- checking return of call runs as expected')
+var describe = require('../')()
+var count = 0
 
 describe('base-level block one', function () {
   describe.beforeEach(function () {
@@ -14,7 +15,6 @@ describe('base-level block one', function () {
     i.end()
   })
 })
-
 
 describe('base-level block two', function () {
   describe.it('base-level block two test one', function (i) {
