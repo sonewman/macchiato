@@ -1,9 +1,15 @@
 var sinon = require('sinon')
 var describe = require('../')
 
-console.log('Assertion test')
+var testName = 'Assertion test'
+console.log(testName)
 
-describe('Assertion test', function () {
+function end(test) {
+  test.end()
+  console.log('%s complete!', testName)
+}
+
+describe(testName, function () {
 
   describe.beforeEach(function () {
     this.thing = this.stub()
@@ -47,8 +53,9 @@ describe('Assertion test', function () {
     describe.it('Should run peer sub test spec', function () {
       this.expect(true).to.be.true('peer nested test was called')
       this.expect(true).to.be.true('something else passed')
-      this.end()
+      end(this)
     })
 
   })
 })
+
