@@ -93,7 +93,7 @@ function macchiato() {
   }
 
   if (options.desc || options.body)
-    describe(options.desc, options.body)
+    return describe(options.desc, options.body)
 
   return describe
 }
