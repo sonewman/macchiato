@@ -1,4 +1,3 @@
-var sinon = require('sinon')
 var describe = require('../')
 
 var testName = 'Assertion test'
