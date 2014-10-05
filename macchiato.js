@@ -62,14 +62,11 @@ function mergeOptions(options, globalOptions) {
   for (var i in globalOptions) {
     if (!(i in options)) options[i] = globalOptions[i]
   }
+  return options
 }
 
 function macchiato() {
-  var stream
-  var OutputConstr
-  var options = handleArgs(arguments)
-  mergeOptions(options, globalOptions)
-
+  var options = mergeOptions(handleArgs(arguments), globalOptions)
   var useGlobals = options.useGlobals === true
 
   if (!global.describe && !global.it && useGlobals) {
@@ -86,8 +83,10 @@ function macchiato() {
     })
   }
 
+  var OutputConstr, o
   if (!outputStream) {
-    OutputConstr = outputs[options.D] || outputs.spec
+    o = options.o || options.output
+    OutputConstr = outputs[o] || outputs.spec
     outputStream = new OutputConstr(options)
     outputStream.pipe(process.stdout)
     runner.pipe(outputStream)
