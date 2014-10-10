@@ -56,7 +56,7 @@ $ macchiato -o tap test/*.js
 ```javascript
 describe('my test', function () {
 
-  beforeEach(function () {
+  describe.beforeEach(function () {
     // sinon is baked in to the test context
     // and passed into all `beforeEach` and
     // `afterEach` callbacks. All spys/stubs
@@ -64,7 +64,7 @@ describe('my test', function () {
     this.myStub = this.stub()
   })
 
-  it('should do amazing things', function (t) {
+  describe.it('should do amazing things', function (t) {
     // the test context can be accessed as the first
     // arguments to the test callback
     t.equals('tape assertions are also baked into the framework', true)
@@ -73,7 +73,7 @@ describe('my test', function () {
 
   describe('my subtest', function () {
     
-    it('should do something interesting', function () {
+    descibe.it('should do something interesting', function () {
       // the test context is also `this` in the test callback
       this.assert(true, 'this test is asserting something')
       this.done()
