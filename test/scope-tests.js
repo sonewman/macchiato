@@ -10,11 +10,9 @@ function assertResults(result) {
 
   if (++i === 4) {
     this.removeListener('data', assertResults)
-    console.log('Expected asserts validated')
   }
 }
 
-console.log(testName)
 describe(testName, function () {
 
   describe.it('Should contain certain method short hands', function (t) {
@@ -29,4 +27,16 @@ describe(testName, function () {
     t.end()
   })
 
+})
+
+describe.scheduler.afterAll(function () {
+  console.log(testName)
+  try {
+    assert.equal(i, 4)
+  } catch (err) {
+    console.log('-- failed')
+    throw err
+  }
+
+  console.log('--passed')
 })

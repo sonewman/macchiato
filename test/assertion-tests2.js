@@ -1,10 +1,9 @@
 var sinon = require('sinon')
 var describe = require('../')
 var assert = require('assert')
+var testName = 'Assertion test two'
 
-console.log('assert test 2')
-
-describe('My Application', function () {
+describe(testName, function () {
 
   describe.beforeEach(function () {
     this.thing = this.stub()
@@ -35,4 +34,9 @@ describe('My Application', function () {
       assert.equal(this.value, 321)
     })
   })
+})
+
+describe.scheduler.afterAll(function () {
+  console.log(testName)
+  console.log('-- passed')
 })

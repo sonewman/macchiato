@@ -12,13 +12,14 @@ var files = []
 
 args._.forEach(function getFiles(p) {
   p = path.resolve(p)
-  var stats = fs.statSync(p)
-  if (stats.isFile()) {
-    files.push(p)
-  } else if (stats.isDirectory()) {
+  var stats = fs.existsSync(p) && fs.statSync(p)
+
+  if (stats && stats.isDirectory()) {
     fs.readdirSync(p).forEach(function (f) {
       getFiles(path.join(p, f))
     })
+  } else {
+    files.push(p)
   }
 })
 

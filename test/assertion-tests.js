@@ -1,12 +1,6 @@
 var describe = require('../')
 
-var testName = 'Assertion test'
-console.log(testName)
-
-function end(test) {
-  test.end()
-  console.log('%s complete!', testName)
-}
+var testName = 'Assertion test one'
 
 describe(testName, function () {
 
@@ -52,9 +46,13 @@ describe(testName, function () {
     describe.it('Should run peer sub test spec', function () {
       this.expect(true).to.be.true('peer nested test was called')
       this.expect(true).to.be.true('something else passed')
-      end(this)
+      this.end()
     })
 
   })
 })
 
+describe.scheduler.afterAll(function () {
+  console.log(testName)
+  console.log('-- passed')
+})
