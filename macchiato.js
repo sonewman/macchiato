@@ -19,6 +19,7 @@ macchiato.createDescribeContext = createDescribeContext
 var globalOptions = macchiato.options = {
   R: 'spec'
   , bail: false
+  , timeout: 5000
 }
 
 function mergeOptions(options, globalOptions) {
@@ -45,8 +46,8 @@ function maybeReleaseGlobals(options, desc) {
   }
 }
 
-// create a new describe context. The returned method can immediately be used 
-// as a test wrapper or it can be called with configuration and return a function 
+// create a new describe context. The returned method can immediately be used
+// as a test wrapper or it can be called with configuration and return a function
 // which is used as a test wrapper. Both uses are valid and return the same context
 // this is a `global` context so that tests can exist in separate files and still
 // run in the same runner.
@@ -65,6 +66,8 @@ function createDescribeContext() {
 
       options = mergeOptions(options || {}, globalOptions)
 
+      describer.runner.setOptions(options)
+
       maybeReleaseGlobals(options, describer.describe)
       var outputStream
 
@@ -82,13 +85,13 @@ function createDescribeContext() {
 
       initialised = true
     }
-    
+
     // if we have a desc and body then this has
     // been called to create a test context,
     // so we create that and return
     if (desc || body)
       return describer.describe(desc, body)
-    
+
     // if we have no arguments or and object
     // we can assume that
     return describer.describe
@@ -98,17 +101,17 @@ function createDescribeContext() {
   describe.it = function it(desc, body) {
     return descIt(desc, body)
   }
-  
+
   // expose describe.run for use:
   // var desc = require('macchiato')
   // desc.run()
   describe.run = describer.run
-  
+
     // expose describe.run for use:
   // var desc = require('macchiato')(options)
   // desc.run()
   describer.describe.run = this.run
-  
+
   // allow scheduler to be used immediately
   describe.scheduler = describer.scheduler
   // as well as the return from a call with options
