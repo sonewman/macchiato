@@ -98,7 +98,9 @@ function createDescribeContext() {
   }
 
   var descIt = describer.describe.it
-  describe.it = function it(desc, body) {
+  describe.it
+  = describe.should
+  = function it(desc, body) {
     return descIt(desc, body)
   }
 
