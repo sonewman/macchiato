@@ -3,6 +3,9 @@
   , "laxbreak": true
   , "laxcomma": true
   , "expr": true
+  , "unused": true
+  , "undef": true
+  , "node": true
   , "globals": {
     "describe": true
     , "xdescribe": true
