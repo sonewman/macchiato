@@ -33,7 +33,7 @@
     "minimist": "^0.2.0",
     "readable-stream": "^1.1.13",
     "sinon": "^1.9.1",
-    "tapout": "^1.2.0",
+    "tapout": "^2.0.0",
     "util-extend": "^1.0.1"
   }
 }
