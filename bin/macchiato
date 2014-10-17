@@ -17,6 +17,18 @@ program
 
 var options = program.parse(process.argv)
 
+var testTypes = ['passing', 'pending', 'failing']
+
+var matched = testTypes.filter(function (key) {
+  if (key in options) return key
+})
+
+if (matched.length) {
+  testTypes.forEach(function (key) {
+    if (!~matched.indexOf(key)) options[key] = false
+  })
+}
+
 var args = options.args
 var l = args.length
 if (!l) return

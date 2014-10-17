@@ -18,7 +18,7 @@ var globalOptions = macchiato.options = {
   output: 'spec'
   , bail: false
   , timeout: 5000
-  , pass: true
+  , passing: true
   , pending: true
   , failing: true
   , granular: false
