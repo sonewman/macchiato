@@ -4,8 +4,6 @@ var SilentOut = require('./lib/silent-out')
 var utils = require('core-util-is')
 
 var aspectMethods = aspects.METHODS
-var noRunnerError = 'Cannot apply spec as there is no test runner'
-
 var outputs = {
   spec: require('./lib/spec-out')
   , tap: require('tapout')
@@ -17,9 +15,13 @@ macchiato.createDescribeContext = createDescribeContext
 // default options
 // TODO write documentation
 var globalOptions = macchiato.options = {
-  R: 'spec'
+  output: 'spec'
   , bail: false
   , timeout: 5000
+  , pass: true
+  , pending: true
+  , failing: true
+  , granular: false
 }
 
 function mergeOptions(options, globalOptions) {
@@ -45,6 +47,7 @@ function maybeReleaseGlobals(options, desc) {
       g[methods[i]] = desc[methods[i]]
   }
 }
+
 
 // create a new describe context. The returned method can immediately be used
 // as a test wrapper or it can be called with configuration and return a function
@@ -74,10 +77,9 @@ function createDescribeContext() {
       if (options.silent)
         outputStream = new SilentOut()
 
-      var OutputConstr, o
+      var OutputConstr
       if (!outputStream) {
-        o = options.o || options.output
-        OutputConstr = outputs[o] || outputs.spec
+        OutputConstr = outputs[options.output] || outputs.spec
         outputStream = new OutputConstr(options)
         outputStream.pipe(process.stdout)
         describer.runner.pipe(outputStream)
@@ -109,10 +111,10 @@ function createDescribeContext() {
   // desc.run()
   describe.run = describer.run
 
-    // expose describe.run for use:
+  // expose describe.run for use:
   // var desc = require('macchiato')(options)
   // desc.run()
-  describer.describe.run = this.run
+  describer.describe.run = describer.run
 
   // allow scheduler to be used immediately
   describe.scheduler = describer.scheduler

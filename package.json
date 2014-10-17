@@ -27,13 +27,12 @@
   "homepage": "https://github.com/sonewman/macchiato",
   "dependencies": {
     "certain": "^1.4.0",
+    "commander": "^2.3.0",
     "core-util-is": "^1.0.1",
     "foreach-async": "^1.1.0",
     "inherits": "^2.0.1",
-    "minimist": "^0.2.0",
     "readable-stream": "^1.1.13",
     "sinon": "^1.9.1",
-    "tapout": "^2.0.0",
-    "util-extend": "^1.0.1"
+    "tapout": "^2.0.0"
   }
 }

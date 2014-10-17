@@ -1,28 +1,46 @@
 #!/usr/bin/env node
-
+var macchiato = require('macchiato')
 var path = require('path')
 var fs = require('fs')
-var macchiato = require('macchiato')
-var args = process.argv.slice(2)
+
+var program = require('commander')
+
+program
+  .version(require('../package').version)
+  .usage('[options] <file ...>')
+  .option('-o, --output [type]', 'Output format [spec]')
+  .option('-t, --timeout [value]', 'Time time out [ms]', Number)
+  .option('-p, --passing', 'Display passing tests')
+  .option('-P, --pending', 'Display pending tests')
+  .option('-f, --failing', 'Display failing tests')
+  .option('-g, --granular', 'Display all granular asserts')
+
+var options = program.parse(process.argv)
+
+var args = options.args
 var l = args.length
 if (!l) return
 
-args = require('minimist')(args)
-var files = []
-
-args._.forEach(function getFiles(p) {
+function getFiles(files, p) {
   p = path.resolve(p)
   var stats = fs.existsSync(p) && fs.statSync(p)
 
   if (stats && stats.isDirectory()) {
     fs.readdirSync(p).forEach(function (f) {
-      getFiles(path.join(p, f))
+      getFiles(files, path.join(p, f))
     })
   } else {
     files.push(p)
   }
+
+  return files
+}
+
+var files = args.reduce(getFiles, [])
+
+Object.keys(macchiato.options).forEach(function (key) {
+  if (options[key] !== undefined)
+    macchiato.options[key] = options[key]
 })
 
-macchiato.run(files, args)
-
-// vim: set ft=javascript
+macchiato.run(files)
