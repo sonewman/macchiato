@@ -6,6 +6,7 @@
   , "unused": true
   , "undef": true
   , "node": true
+  , "browser": true
   , "globals": {
     "describe": true
     , "xdescribe": true
