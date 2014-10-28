@@ -3,8 +3,10 @@
   "version": "2.2.0",
   "description": "Mocha styled tape with sinon",
   "main": "macchiato.js",
+  "browser": "browser.js",
   "scripts": {
-    "test": "bin/macchiato test/"
+    "test": "bin/macchiato test/*.js",
+    "client": "browserify > "
   },
   "bin": {
     "macchiato": "./bin/macchiato"
@@ -31,8 +33,22 @@
     "core-util-is": "^1.0.1",
     "foreach-async": "^1.1.0",
     "inherits": "^2.0.1",
-    "readable-stream": "^1.1.13",
+    "readable-stream": "sonewman/readable-stream",
     "sinon": "^1.9.1",
     "tapout": "^2.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^6.1.0",
+    "connect-livereload": "^0.5.0",
+    "express": "^4.9.8",
+    "gulp": "^3.4.0",
+    "gulp-concat": "^2.2.0",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^1.0.1",
+    "less-middleware": "^1.0.4",
+    "open": "0.0.5",
+    "through2": "^1.1.1",
+    "tiny-lr": "^0.1.4",
+    "vinyl-source-stream": "^1.0.0"
   }
 }

@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+  <section id="main">
+    <h1 id="main-header">Macchiato: Running tests</h1>
+    <div id="total"></div>
+    <ul id="results" class="results no-padding"></ul>
+  </section>
+  
+  <script id="branch" type="template">
+    <li class="branch">
+      <header class="branch-header">
+        <h2 class="branch-title">{title}</h2>
+      </header>
+      <ul class="branch-children"></ul>
+    </li>
+  </script>
+
+  <script id="test" type="template">
+    <li class="test-cont">
+      <div class="test">
+        <header class="test-header {status}">
+          <h3 class="test-title">{name}</h3>
+        </header>
+        <ul class="assert-list"></ul>
+      </div>
+    </li>
+  </script>
+
+  <script src="bundle.js"></script>
+</body>
+</html>

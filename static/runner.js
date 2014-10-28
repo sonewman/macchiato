@@ -1,0 +1,6 @@
+require('../test/assertion-tests')
+//require('../test/assertion-tests2')
+//require('../test/async-test')
+//require('../test/chaining-api')
+//require('../test/scope-tests')
+//require('../test/unnamed-tests')
