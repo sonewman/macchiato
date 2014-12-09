@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var macchiato = require('macchiato')
+var macchiato = require('../')
 var path = require('path')
 var fs = require('fs')
 
