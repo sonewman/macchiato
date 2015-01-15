@@ -14,8 +14,10 @@ program
   .option('-P, --pending', 'Display pending tests')
   .option('-f, --failing', 'Display failing tests')
   .option('-g, --granular', 'Display all granular asserts')
+  .option('-b, --browser', 'Run test through browser via browserify')
 
 var options = program.parse(process.argv)
+console.log(options.browser)
 
 var testTypes = ['passing', 'pending', 'failing']
 
@@ -30,8 +32,7 @@ if (matched.length) {
 }
 
 var args = options.args
-var l = args.length
-if (!l) return
+if (!args.length) return
 
 function getFiles(files, p) {
   p = path.resolve(p)

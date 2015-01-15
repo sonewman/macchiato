@@ -3,10 +3,8 @@ var source = require('vinyl-source-stream')
 var streamify = require('gulp-streamify')
 var browserify = require('browserify')
 var concat = require('gulp-concat')
-//var uglify = require('gulp-uglify')
 var path = require('path')
-var open = require('open')
-var lessMiddleware = require('less-middleware')
+//var open = require('open')
 
 var express = require('express')
 var connectLivereload = require('connect-livereload')
@@ -53,17 +51,16 @@ function buildOnWatch() {
 function watch() {
   var app = express()
   app.use(connectLivereload({ port: RELOAD_PORT }))
-  app.use(lessMiddleware(path.join(CLIENT_TEST_DIR)))
   app.use(express.static(path.join(CLIENT_TEST_DIR)))
 
   app.listen(SERVER_PORT, function () {
-    open('http:localhost:' + SERVER_PORT, 'chrome')
+//    console.log('opening')
+//    open('http://localhost:' + SERVER_PORT, 'chrome')
   })
   tinyLr = require('tiny-lr')()
   tinyLr.listen(RELOAD_PORT)
 
   gulp.watch(path.join(LIB_DIR, '/**/*.js'), buildOnWatch)
-  gulp.watch(path.join(CLIENT_TEST_DIR, '/**/*.less'), buildOnWatch)
   gulp.watch(path.join(CLIENT_TEST_DIR, '/**/*.html'), buildOnWatch)
   gulp.watch(path.join(TEST_DIR, '/**/*.js'), buildOnWatch)
   gulp.watch(TEST_ENTRY, buildOnWatch)
