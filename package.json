@@ -1,6 +1,6 @@
 {
   "name": "macchiato",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "Mocha styled tape with sinon",
   "main": "macchiato.js",
   "scripts": {
