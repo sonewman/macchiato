@@ -1,37 +1,10 @@
 #!/usr/bin/env node
-var macchiato = require('../')
 var path = require('path')
 var fs = require('fs')
+var macchiato = require('../')
 
-var program = require('commander')
-
-program
-  .version(require('../package').version)
-  .usage('[options] <file ...>')
-  .option('-o, --output [type]', 'Output format [spec]')
-  .option('-t, --timeout [value]', 'Time time out [ms]', Number)
-  .option('-p, --passing', 'Display passing tests')
-  .option('-P, --pending', 'Display pending tests')
-  .option('-f, --failing', 'Display failing tests')
-  .option('-g, --granular', 'Display all granular asserts')
-
-var options = program.parse(process.argv)
-
-var testTypes = ['passing', 'pending', 'failing']
-
-var matched = testTypes.filter(function (key) {
-  if (key in options) return key
-})
-
-if (matched.length) {
-  testTypes.forEach(function (key) {
-    if (!~matched.indexOf(key)) options[key] = false
-  })
-}
-
-var args = options.args
-var l = args.length
-if (!l) return
+var args = macchiato.options.__args
+if (!args.length) return
 
 function getFiles(files, p) {
   p = path.resolve(p)
@@ -48,11 +21,4 @@ function getFiles(files, p) {
   return files
 }
 
-var files = args.reduce(getFiles, [])
-
-Object.keys(macchiato.options).forEach(function (key) {
-  if (options[key] !== undefined)
-    macchiato.options[key] = options[key]
-})
-
-macchiato.run(files)
+macchiato.run(args.reduce(getFiles, []))
