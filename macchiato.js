@@ -24,7 +24,7 @@ var opts = program.parse(process.argv)
 var options = Object.keys(createContext.defaultOptions)
   .reduce(function (o, key) {
     if (opts[key] !== undefined)
-      o[key === 'args' ? '__args': key] = opts[key]
+      o[key === 'args' ? '__args' : key] = opts[key]
     return o
   }, {})
 

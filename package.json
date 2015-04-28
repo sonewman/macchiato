@@ -35,5 +35,8 @@
     "sinon": "^1.9.1",
     "tapout": "^2.0.0",
     "util-extend": "^1.0.1"
+  },
+  "devDependencies": {
+    "promise": "^7.0.1"
   }
 }
