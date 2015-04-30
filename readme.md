@@ -111,3 +111,6 @@ $ macchiato -o tap test/*.js
 ```
 
 More documentation coming soon...
+
+# Licence
+MIT

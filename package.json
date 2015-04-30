@@ -20,7 +20,7 @@
     "testing"
   ],
   "author": "Sam Newman",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sonewman/macchiato/issues"
   },
