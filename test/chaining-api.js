@@ -9,7 +9,7 @@ var afterEachStub = sinon.stub()
 var count = 0
 
 
-describe(testName)
+describe(testName + ' 1')
   .beforeEach(beforeEachStub)
   .it('Should allow one method to chain', function () {
     this.pass()
@@ -21,12 +21,24 @@ describe(testName)
     this.end()
     count++
   })
+  .should('allow a test to be defined with .should', function () {
+    this.pass()
+    this.end()
+    count++
+  })
   .afterEach(afterEachStub)
+
+describe(testName + ' 2')
+  .should('allow a test to be defined with .should from initial desc', function () {
+    this.pass()
+    this.end()
+    count++
+  })
 
 describe.scheduler.afterAll(function () {
   console.log(testName)
-  assert(beforeEachStub.calledTwice)
-  assert(afterEachStub.calledTwice)
-  assert.equal(count, 2)
+  assert(beforeEachStub.calledThrice)
+  assert(afterEachStub.calledThrice)
+  assert.equal(count, 4)
   console.log('-- passed')
 })
