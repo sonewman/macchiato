@@ -1,4 +1,3 @@
-var sinon = require('sinon')
 var describe = require('../')
 var assert = require('assert')
 var testName = 'Assertion test two'
@@ -7,7 +6,7 @@ describe(testName, function () {
 
   describe.beforeEach(function () {
     this.thing = this.stub()
-    this.value =  123
+    this.value = 123
   })
 
   describe.it('Should do something', function (test) {
