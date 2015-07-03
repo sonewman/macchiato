@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/sonewman/macchiato",
   "dependencies": {
-    "certain": "^1.7.0",
+    "certain": "^1.7.1",
     "commander": "^2.3.0",
     "core-util-is": "^1.0.1",
     "foreach-async": "^1.1.0",
