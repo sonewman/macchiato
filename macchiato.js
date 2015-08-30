@@ -10,6 +10,7 @@ program
   .option('-P, --pending', 'Display pending tests')
   .option('-f, --failing', 'Display failing tests')
   .option('-g, --granular', 'Display all granular asserts')
+  .option('-G, --grep [value]', 'Only Run Tests Matching pattern [value]')
  // - coming soon .option('-b, --browser', 'Run test through browser via browserify')
 
 var opts = program.parse(process.argv)
