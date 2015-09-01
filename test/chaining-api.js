@@ -37,8 +37,13 @@ describe(testName + ' 2')
 
 describe.scheduler.afterAll(function () {
   console.log(testName)
-  assert(beforeEachStub.calledThrice)
-  assert(afterEachStub.calledThrice)
-  assert.equal(count, 4)
-  console.log('-- passed')
+  try {
+    assert(beforeEachStub.calledThrice)
+    assert(afterEachStub.calledThrice)
+    assert.equal(count, 4)
+    console.log('-- passed')
+  } catch(err) {
+    console.error('-- failed')
+    throw err
+  }
 })
