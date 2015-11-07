@@ -4,8 +4,9 @@ var testName = 'Assertion test one'
 
 describe(testName, function () {
 
-  describe.beforeEach(function () {
+  describe.beforeEach(function (ctx) {
     this.thing = this.stub()
+    this.expect(ctx).to.equal(this)
   })
 
   describe.it('Should do some stuff', function (test) {
@@ -30,12 +31,11 @@ describe(testName, function () {
       this.expect(this.thing).to.equal(null)
       test.end()
     })
-
   })
 
   describe('something else', function () {
 
-    describe.it('Should do some more things', function (test) {
+    describe.it('Should do some more things', function () {
       this.expect(true).to.be.true('even deeper test was called')
       this.end()
     })

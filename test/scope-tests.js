@@ -1,9 +1,7 @@
 var testName = 'Scope Test'
 var assert = require('assert')
-var sinon = require('sinon')
 var describe = require('../')
 
-var expected = 4
 var i = 0
 function assertResults(result) {
   assert(result.ok)
