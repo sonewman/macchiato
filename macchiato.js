@@ -11,6 +11,7 @@ program
   .option('-f, --failing', 'Display failing tests')
   .option('-g, --granular', 'Display all granular asserts')
   .option('-G, --grep [value]', 'Only Run Tests Matching pattern [value]')
+  .option('-U, --useGlobals', 'Make methods globals')
  // - coming soon .option('-b, --browser', 'Run test through browser via browserify')
 
 var opts = program.parse(process.argv)
